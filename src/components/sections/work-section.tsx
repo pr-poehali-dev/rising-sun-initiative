@@ -100,8 +100,13 @@ const genres = ["Все", "Экшен", "RPG", "Инди", "Приключени
 export function WorkSection() {
   const { ref, isVisible } = useReveal(0.3)
   const [activeGenre, setActiveGenre] = useState("Все")
+  const [search, setSearch] = useState("")
 
-  const filtered = activeGenre === "Все" ? games : games.filter((g) => g.genre === activeGenre)
+  const filtered = games.filter((g) => {
+    const matchGenre = activeGenre === "Все" || g.genre === activeGenre
+    const matchSearch = g.title.toLowerCase().includes(search.toLowerCase())
+    return matchGenre && matchSearch
+  })
 
   return (
     <section
@@ -120,26 +125,35 @@ export function WorkSection() {
           <p className="font-mono text-sm text-foreground/60 md:text-base">/ {filtered.length} игр</p>
         </div>
 
-        {/* Фильтры */}
+        {/* Поиск + Фильтры */}
         <div
-          className={`mb-4 flex shrink-0 flex-wrap gap-2 transition-all duration-700 md:mb-6 ${
+          className={`mb-4 shrink-0 flex flex-col gap-3 transition-all duration-700 md:mb-5 ${
             isVisible ? "translate-y-0 opacity-100" : "translate-y-4 opacity-0"
           }`}
           style={{ transitionDelay: "150ms" }}
         >
-          {genres.map((genre) => (
-            <button
-              key={genre}
-              onClick={() => setActiveGenre(genre)}
-              className={`rounded-full border px-4 py-1.5 font-mono text-xs transition-all duration-300 ${
-                activeGenre === genre
-                  ? "border-foreground/60 bg-foreground/15 text-foreground backdrop-blur-md"
-                  : "border-foreground/15 text-foreground/50 hover:border-foreground/30 hover:text-foreground/80"
-              }`}
-            >
-              {genre}
-            </button>
-          ))}
+          <input
+            type="text"
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+            placeholder="Поиск по названию..."
+            className="w-full max-w-sm border-b border-foreground/20 bg-transparent py-1.5 font-mono text-sm text-foreground placeholder:text-foreground/30 focus:border-foreground/50 focus:outline-none"
+          />
+          <div className="flex flex-wrap gap-2">
+            {genres.map((genre) => (
+              <button
+                key={genre}
+                onClick={() => setActiveGenre(genre)}
+                className={`rounded-full border px-4 py-1.5 font-mono text-xs transition-all duration-300 ${
+                  activeGenre === genre
+                    ? "border-foreground/60 bg-foreground/15 text-foreground backdrop-blur-md"
+                    : "border-foreground/15 text-foreground/50 hover:border-foreground/30 hover:text-foreground/80"
+                }`}
+              >
+                {genre}
+              </button>
+            ))}
+          </div>
         </div>
 
         <div
