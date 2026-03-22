@@ -1,4 +1,33 @@
 import { useReveal } from "@/hooks/use-reveal"
+import { useState } from "react"
+import { MagneticButton } from "@/components/magnetic-button"
+
+const games = [
+  {
+    number: "01",
+    title: "Cyberpunk 2077",
+    category: "Ролевой экшен · Открытый мир",
+    price: "699 ₽",
+    oldPrice: "1 999 ₽",
+    direction: "left",
+  },
+  {
+    number: "02",
+    title: "Elden Ring",
+    category: "Souls-like · Фэнтези",
+    price: "1 299 ₽",
+    oldPrice: null,
+    direction: "right",
+  },
+  {
+    number: "03",
+    title: "Hollow Knight",
+    category: "Инди · Метроидвания",
+    price: "299 ₽",
+    oldPrice: "499 ₽",
+    direction: "left",
+  },
+]
 
 export function WorkSection() {
   const { ref, isVisible } = useReveal(0.3)
@@ -20,31 +49,9 @@ export function WorkSection() {
           <p className="font-mono text-sm text-foreground/60 md:text-base">/ Популярные игры</p>
         </div>
 
-        <div className="space-y-6 md:space-y-8">
-          {[
-            {
-              number: "01",
-              title: "Cyberpunk 2077",
-              category: "Ролевой экшен · Открытый мир",
-              year: "699 ₽",
-              direction: "left",
-            },
-            {
-              number: "02",
-              title: "Elden Ring",
-              category: "Souls-like · Фэнтези",
-              year: "1 299 ₽",
-              direction: "right",
-            },
-            {
-              number: "03",
-              title: "Hollow Knight",
-              category: "Инди · Метроидвания",
-              year: "299 ₽",
-              direction: "left",
-            },
-          ].map((project, i) => (
-            <ProjectCard key={i} project={project} index={i} isVisible={isVisible} />
+        <div className="space-y-4 md:space-y-6">
+          {games.map((game, i) => (
+            <GameCard key={i} game={game} index={i} isVisible={isVisible} />
           ))}
         </div>
       </div>
@@ -52,43 +59,58 @@ export function WorkSection() {
   )
 }
 
-function ProjectCard({
-  project,
+function GameCard({
+  game,
   index,
   isVisible,
 }: {
-  project: { number: string; title: string; category: string; year: string; direction: string }
+  game: { number: string; title: string; category: string; price: string; oldPrice: string | null; direction: string }
   index: number
   isVisible: boolean
 }) {
+  const [bought, setBought] = useState(false)
+
   const getRevealClass = () => {
     if (!isVisible) {
-      return project.direction === "left" ? "-translate-x-16 opacity-0" : "translate-x-16 opacity-0"
+      return game.direction === "left" ? "-translate-x-16 opacity-0" : "translate-x-16 opacity-0"
     }
     return "translate-x-0 opacity-100"
   }
 
   return (
     <div
-      className={`group flex items-center justify-between border-b border-foreground/10 py-6 transition-all duration-700 hover:border-foreground/20 md:py-8 ${getRevealClass()}`}
+      className={`group flex items-center justify-between border-b border-foreground/10 py-5 transition-all duration-700 hover:border-foreground/20 md:py-7 ${getRevealClass()}`}
       style={{
         transitionDelay: `${index * 150}ms`,
-        marginLeft: index % 2 === 0 ? "0" : "auto",
-        maxWidth: index % 2 === 0 ? "85%" : "90%",
       }}
     >
-      <div className="flex items-baseline gap-4 md:gap-8">
+      <div className="flex items-center gap-4 md:gap-8">
         <span className="font-mono text-sm text-foreground/30 transition-colors group-hover:text-foreground/50 md:text-base">
-          {project.number}
+          {game.number}
         </span>
         <div>
           <h3 className="mb-1 font-sans text-2xl font-light text-foreground transition-transform duration-300 group-hover:translate-x-2 md:text-3xl lg:text-4xl">
-            {project.title}
+            {game.title}
           </h3>
-          <p className="font-mono text-xs text-foreground/50 md:text-sm">{project.category}</p>
+          <p className="font-mono text-xs text-foreground/50 md:text-sm">{game.category}</p>
         </div>
       </div>
-      <span className="font-mono text-sm font-medium text-foreground/80 md:text-base">{project.year}</span>
+
+      <div className="flex items-center gap-4 md:gap-8">
+        <div className="text-right">
+          <div className="font-sans text-lg font-light text-foreground md:text-2xl">{game.price}</div>
+          {game.oldPrice && (
+            <div className="font-mono text-xs text-foreground/40 line-through">{game.oldPrice}</div>
+          )}
+        </div>
+        <MagneticButton
+          size="sm"
+          variant={bought ? "secondary" : "primary"}
+          onClick={() => setBought(true)}
+        >
+          {bought ? "В библиотеке" : "Купить"}
+        </MagneticButton>
+      </div>
     </div>
   )
 }
