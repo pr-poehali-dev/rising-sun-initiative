@@ -12,9 +12,9 @@ const games = [
   },
   {
     number: "02",
-    title: "Elden Ring",
-    category: "Souls-like · Фэнтези",
-    price: "1 299 ₽",
+    title: "Grand Theft Auto V",
+    category: "Экшен · Открытый мир",
+    price: "999 ₽",
     oldPrice: null,
   },
   {
