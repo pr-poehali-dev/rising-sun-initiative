@@ -9,6 +9,7 @@ const games = [
     category: "Ролевой экшен · Открытый мир",
     price: "699 ₽",
     oldPrice: "1 999 ₽",
+    cover: "https://cdn.poehali.dev/projects/dedab9ad-ff78-4789-9e70-320738f5c046/files/421301af-0d39-4c90-a70e-5a4cc191e4fc.jpg",
   },
   {
     number: "02",
@@ -16,6 +17,7 @@ const games = [
     category: "Экшен · Открытый мир",
     price: "999 ₽",
     oldPrice: null,
+    cover: "https://cdn.poehali.dev/projects/dedab9ad-ff78-4789-9e70-320738f5c046/files/c08d0ea9-d7d7-4890-b6b4-f3c75e732031.jpg",
   },
   {
     number: "03",
@@ -23,6 +25,7 @@ const games = [
     category: "Инди · Метроидвания",
     price: "299 ₽",
     oldPrice: "499 ₽",
+    cover: "https://cdn.poehali.dev/projects/dedab9ad-ff78-4789-9e70-320738f5c046/files/75b7a7bc-75c5-4573-a7b0-0ad6ebb8e4ac.jpg",
   },
   {
     number: "04",
@@ -30,6 +33,7 @@ const games = [
     category: "Приключение · Открытый мир",
     price: "1 499 ₽",
     oldPrice: null,
+    cover: "https://cdn.poehali.dev/projects/dedab9ad-ff78-4789-9e70-320738f5c046/files/3cc7f819-f913-4485-b2b5-84d6e3b2dcd7.jpg",
   },
   {
     number: "05",
@@ -37,6 +41,7 @@ const games = [
     category: "RPG · Фэнтези",
     price: "499 ₽",
     oldPrice: "1 299 ₽",
+    cover: "https://cdn.poehali.dev/projects/dedab9ad-ff78-4789-9e70-320738f5c046/files/3004c828-2af8-488d-a6ea-c422b0ab91ca.jpg",
   },
   {
     number: "06",
@@ -44,6 +49,7 @@ const games = [
     category: "Рогалик · Экшен",
     price: "599 ₽",
     oldPrice: null,
+    cover: "https://cdn.poehali.dev/projects/dedab9ad-ff78-4789-9e70-320738f5c046/files/b9ee4107-d07f-4a30-aede-1f6407dbceb2.jpg",
   },
   {
     number: "07",
@@ -51,6 +57,7 @@ const games = [
     category: "Экшен · Мифология",
     price: "1 999 ₽",
     oldPrice: null,
+    cover: "https://cdn.poehali.dev/projects/dedab9ad-ff78-4789-9e70-320738f5c046/files/24b478da-c677-495c-8782-fdcca7a82477.jpg",
   },
   {
     number: "08",
@@ -58,6 +65,7 @@ const games = [
     category: "Инди · Симулятор фермы",
     price: "249 ₽",
     oldPrice: "399 ₽",
+    cover: "https://cdn.poehali.dev/projects/dedab9ad-ff78-4789-9e70-320738f5c046/files/bef1b58b-dc28-4fd8-a34d-8ec51e1dd354.jpg",
   },
   {
     number: "09",
@@ -65,6 +73,7 @@ const games = [
     category: "Souls-like · Фэнтези",
     price: "799 ₽",
     oldPrice: "1 599 ₽",
+    cover: "https://cdn.poehali.dev/projects/dedab9ad-ff78-4789-9e70-320738f5c046/files/7982d143-3b94-4d57-9841-25cbd40d3665.jpg",
   },
   {
     number: "10",
@@ -72,6 +81,7 @@ const games = [
     category: "RPG · Фэнтези",
     price: "2 299 ₽",
     oldPrice: null,
+    cover: "https://cdn.poehali.dev/projects/dedab9ad-ff78-4789-9e70-320738f5c046/files/e8ad9b30-a142-4feb-80c5-b2645e67d95e.jpg",
   },
 ]
 
@@ -115,7 +125,7 @@ function GameCard({
   index,
   isVisible,
 }: {
-  game: { number: string; title: string; category: string; price: string; oldPrice: string | null }
+  game: { number: string; title: string; category: string; price: string; oldPrice: string | null; cover: string }
   index: number
   isVisible: boolean
 }) {
@@ -123,17 +133,24 @@ function GameCard({
 
   return (
     <div
-      className={`group flex items-center justify-between border-b border-foreground/10 py-4 transition-all duration-700 hover:border-foreground/25 md:py-5 ${
+      className={`group flex items-center justify-between border-b border-foreground/10 py-3 transition-all duration-700 hover:border-foreground/25 md:py-4 ${
         isVisible ? "translate-x-0 opacity-100" : "-translate-x-12 opacity-0"
       }`}
       style={{ transitionDelay: `${Math.min(index * 60, 400)}ms` }}
     >
-      <div className="flex items-center gap-4 md:gap-6">
-        <span className="w-8 shrink-0 font-mono text-xs text-foreground/30 group-hover:text-foreground/50">
+      <div className="flex items-center gap-3 md:gap-5">
+        <span className="w-6 shrink-0 font-mono text-xs text-foreground/30 group-hover:text-foreground/50">
           {game.number}
         </span>
+        <div className="h-12 w-12 shrink-0 overflow-hidden rounded-lg md:h-14 md:w-14">
+          <img
+            src={game.cover}
+            alt={game.title}
+            className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-110"
+          />
+        </div>
         <div>
-          <h3 className="font-sans text-lg font-light text-foreground transition-transform duration-300 group-hover:translate-x-1 md:text-2xl">
+          <h3 className="font-sans text-base font-light text-foreground transition-transform duration-300 group-hover:translate-x-1 md:text-xl">
             {game.title}
           </h3>
           <p className="font-mono text-xs text-foreground/50">{game.category}</p>
@@ -142,7 +159,7 @@ function GameCard({
 
       <div className="flex shrink-0 items-center gap-3 md:gap-6">
         <div className="text-right">
-          <div className="font-sans text-base font-light text-foreground md:text-xl">{game.price}</div>
+          <div className="font-sans text-base font-light text-foreground md:text-lg">{game.price}</div>
           {game.oldPrice && (
             <div className="font-mono text-xs text-foreground/40 line-through">{game.oldPrice}</div>
           )}
